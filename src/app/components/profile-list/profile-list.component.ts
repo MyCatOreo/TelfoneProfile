@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Profile } from './../../models/profile';
 
 @Component({
   selector: 'app-profile-list',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileListComponent implements OnInit {
 
+  @Input() profileList: Profile[];
+
+  @Output() profileSelect = new EventEmitter<number>();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  selectProfile(id:number) {
+    id = 160;
+    this.profileSelect.emit(id);
   }
 
 }

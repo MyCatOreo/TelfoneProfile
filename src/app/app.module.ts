@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule, MatButtonToggleModule } from '@angular/material';
 
@@ -8,6 +10,8 @@ import { AppComponent } from './app.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { ProfileListComponent } from './components/profile-list/profile-list.component';
 import { ProfileFormComponent } from './components/profile-form/profile-form.component';
+
+import { ProfileService } from './services/profileSvc.service';
 
 @NgModule({
   declarations: [
@@ -20,9 +24,10 @@ import { ProfileFormComponent } from './components/profile-form/profile-form.com
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
     MatButtonModule, MatButtonToggleModule
   ],
-  providers: [],
+  providers: [ProfileService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
