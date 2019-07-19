@@ -1,6 +1,65 @@
-<p>profile-form works!</p>
 
-1.{{profile | json}}
-2. {{workingProfile | json}}
+
+{{profile | json}}
+<hr />
+{{workingProfile | json}}
+<hr />
+
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <mat-form-field>
+            <input matInput placeholder="Email" [(ngModel)]="workingProfile.email">
+            </mat-form-field>
+        </div>
+    </div>
+            
+    <div class="row">
+        <div class="col-4">
+            <mat-form-field>
+            <input matInput placeholder="First Name" [(ngModel)]="workingProfile.firstName">
+            </mat-form-field>
+        </div>
+
+        <div class="col-4">
+            <mat-form-field>
+                <input matInput placeholder="Last Name" [(ngModel)]="workingProfile.lastName">
+            </mat-form-field>
+        </div>
+        
+    </div>
+        
+    <div class="row">
+        <div class="col-4">
+            <mat-form-field>
+                <input matInput placeholder="Display Name" [(ngModel)]="workingProfile.displayName">
+            </mat-form-field>
+        </div>
+    </div>
+            
+    <div class="row">
+            <div class="col-6">
+                <mat-form-field>
+                <textarea matInput placeholder="Meal Preference" [(ngModel)]="workingProfile.description"></textarea>
+            </mat-form-field>
+            </div>
+    </div>
+
+    <div class="row">
+        <div class="col-4">
+        <mat-form-field>
+                <input matInput placeholder="Department" [(ngModel)]="workingProfile.department">
+            </mat-form-field>
+        </div>
+        <div class="col-4">
+            <mat-form-field>
+                <input matInput placeholder="Team" [(ngModel)]="workingProfile.team">
+            </mat-form-field>
+        </div>
+    </div>
+
+</div>
+
+<hr />
 
 <button type="button" class="btn btn-primary" (click)="submit()">submit</button>

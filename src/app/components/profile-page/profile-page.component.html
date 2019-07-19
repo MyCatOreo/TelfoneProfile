@@ -1,14 +1,23 @@
-<p>profile-page works!</p>
+<h1>some heading here</h1>
 
 <button type="button" class="btn btn-primary" (click)="addProfile(this.testData)">push add</button>
 
 <button type="button" class="btn btn-primary" (click)="updateProfile(159, this.testData2)">put update</button>
 
 <button type="button" class="btn btn-primary" (click)="loadProfile(159)">get</button>
+<hr/>
 
 <button type="button" class="btn btn-primary" (click)="getProfileList()">get list</button>
 
 <hr/>
-<app-profile-form [profile]='activeProfile' (profileSumbit)='onProfileSumbitted($event)'></app-profile-form>
 
-<app-profile-list [profileList]='profileList' (profileSelect)='onProfileSelected($event)'></app-profile-list>
+<div class="row">
+    <div class="col-8">
+        <app-profile-form [profile]='activeProfile' (profileSumbit)='onProfileSumbitted($event)'></app-profile-form>
+    </div>
+    <div class="col-4">
+        <app-profile-list [profileList]='profileList' (profileSelect)='onProfileSelected($event)'></app-profile-list>
+    </div>
+</div>
+
+
