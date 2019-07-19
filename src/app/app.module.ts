@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatButtonToggleModule,MatFormFieldModule,MatInputModule } from '@angular/material';
+import { MatButtonModule, MatButtonToggleModule,MatFormFieldModule,MatInputModule, MatListModule, MatSnackBarModule } from '@angular/material';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -28,7 +28,7 @@ import { ProfileService } from './services/profileSvc.service';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    MatButtonModule, MatButtonToggleModule, MatFormFieldModule,MatInputModule
+    MatButtonModule, MatButtonToggleModule, MatFormFieldModule,MatInputModule, MatListModule,MatSnackBarModule
   ],
   providers: [ProfileService],
   bootstrap: [AppComponent]

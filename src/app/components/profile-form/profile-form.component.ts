@@ -8,10 +8,18 @@ import { Profile, initProfile } from './../../models/profile';
 })
 export class ProfileFormComponent implements OnInit {
 
-  @Input() profile: Profile;
-  @Output() profileSumbit = new EventEmitter<Profile>();
+  workingProfile: Profile; // for edit
 
-  workingProfile: Profile;
+  private _profile: Profile;
+  @Input() set profile(profile: Profile) {
+    this._profile = profile;
+    this.workingProfile = Object.assign({}, this.profile);
+  };
+  get profile(): Profile{
+    return this._profile;
+  }
+
+  @Output() profileSumbit = new EventEmitter<Profile>();
 
   constructor() { }
 
@@ -20,13 +28,15 @@ export class ProfileFormComponent implements OnInit {
       this.workingProfile = Object.assign({}, this.profile);
     }
     else {
-      this.workingProfile = initProfile;
+      this.workingProfile = Object.assign({}, initProfile);
     }
   }
 
+  loadWorkingProfile() {
+    this.workingProfile = Object.assign({}, this.profile);
+  }
+
   submit() {
-    this.workingProfile.email = 'change@t.c';
-    debugger;
     this.profileSumbit.emit(this.workingProfile);
   }
 

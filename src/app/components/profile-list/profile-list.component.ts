@@ -18,7 +18,6 @@ export class ProfileListComponent implements OnInit {
   }
 
   selectProfile(id:number) {
-    id = 160;
     this.profileSelect.emit(id);
   }
 

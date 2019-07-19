@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './../../services/profileSvc.service';
-import { Profile } from './../../models/profile';
+import { Profile, initProfile } from './../../models/profile';
+import { MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile-page',
@@ -12,28 +13,7 @@ export class ProfilePageComponent implements OnInit {
   profileList: Profile[];
   activeProfile: Profile;
 
-  testData = {
-    email: "test1@t.t",
-    firstName: "string",
-    lastName: "string",
-    displayName: "string",
-    description: "string",
-    department: "string",
-    team: "string"
-  }
-
-  testData2 = {
-    userId: 159,
-    email: "test2@t.t",
-    firstName: "string",
-    lastName: "string",
-    displayName: "string",
-    description: "string",
-    department: "string",
-    team: "string"
-  }
-
-  constructor(private profileSvc: ProfileService) { }
+  constructor(private profileSvc: ProfileService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.getProfileList();
@@ -42,6 +22,9 @@ export class ProfilePageComponent implements OnInit {
   addProfile(data: Profile) {
     this.profileSvc.addProfile(data).subscribe(response => {
       console.log(response);
+      this.getProfileList();
+      this.clearProfile();
+      this.openSnackBar("Profile Updated!","ok");
     },
     error => {
       console.log(error)
@@ -51,6 +34,9 @@ export class ProfilePageComponent implements OnInit {
   updateProfile(id: number, data: Profile) {
     this.profileSvc.updateProfileById(id, data).subscribe(response => {
       console.log(response);
+      this.getProfileList();
+      this.clearProfile();
+      this.openSnackBar("Profile Updated!","ok");
     },
     error => {
       console.log(error)
@@ -77,6 +63,16 @@ export class ProfilePageComponent implements OnInit {
     });
   } 
 
+  clearProfile() {
+    this.activeProfile = Object.assign({}, initProfile);
+  }
+
+  
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
 
   onProfileSelected(id) {
     console.log(id);
