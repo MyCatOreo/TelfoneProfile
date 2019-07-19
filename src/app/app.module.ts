@@ -15,10 +15,10 @@ import { ProfileFormComponent } from './components/profile-form/profile-form.com
 
 import { ProfileService } from './services/profileSvc.service';
 
-// import { StoreModule } from '@ngrx/store';
-// import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-// import { profileReducer } from './reducers/profile.reducer';
-// import { environment } from 'src/environments/environment';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { profileListReducer } from './reducers/profile.reducer';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -34,11 +34,11 @@ import { ProfileService } from './services/profileSvc.service';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule, MatButtonToggleModule, MatFormFieldModule,MatInputModule, MatListModule,MatSnackBarModule
-    // StoreModule.forRoot({
-    //   profileReducer
-    // }),
-    //StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    MatButtonModule, MatButtonToggleModule, MatFormFieldModule,MatInputModule, MatListModule,MatSnackBarModule,
+    StoreModule.forRoot({
+      profileListReducer
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [ProfileService],
   bootstrap: [AppComponent]

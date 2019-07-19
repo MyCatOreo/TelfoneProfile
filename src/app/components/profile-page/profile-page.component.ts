@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProfileService } from './../../services/profileSvc.service';
 import { Profile, initProfile } from './../../models/profile';
 import { MatSnackBar} from '@angular/material/snack-bar';
+
+import { Observable, Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { loadProfileList } from '../../reducers/profile.actions';
+import { ProfileState } from '../../reducers';
 
 @Component({
   selector: 'app-profile-page',
@@ -11,12 +16,35 @@ import { MatSnackBar} from '@angular/material/snack-bar';
 export class ProfilePageComponent implements OnInit {
 
   profileList: Profile[];
-  activeProfile: Profile;
+  profileList$: Observable<Profile[]>;
 
-  constructor(private profileSvc: ProfileService, private _snackBar: MatSnackBar) { }
+  activeProfile: Profile;
+  // activeProfile$: Observable<Profile>; //search me: for activeProfile
+  private profileStateSubscription: Subscription;
+
+  constructor(private profileSvc: ProfileService, 
+    private _snackBar: MatSnackBar, 
+    private store: Store<ProfileState>) { 
+  //  this.profileState$ = store.select('activeProfile'); //search me: set observable for activeProfile
+  
+    this.profileList$ = this.profileSvc.getProfileAll();
+
+
+  }
 
   ngOnInit() {
+    //serach me: init store subscription here
+
+    // this.profileStateSubscription = this.activeProfile$.subscribe((state) =>{
+    //   this.activeProfile = state; //search me: set active profile from updated state
+    // });
+
     this.getProfileList();
+  }
+  
+  ngOnDestry() {
+    //search me: unsubscribe here
+  //  this.profileStateSubscription.unsubscribe();
   }
 
   addProfile(data: Profile) {
@@ -44,7 +72,9 @@ export class ProfilePageComponent implements OnInit {
   }
 
   loadProfile(id: number) {
+  //  debugger;
     this.profileSvc.getProfileById(id).subscribe(response => {
+      //serach me
       this.activeProfile = response;
       console.log(this.activeProfile);
     },
@@ -55,8 +85,9 @@ export class ProfilePageComponent implements OnInit {
 
   getProfileList() {
     this.profileSvc.getProfileAll().subscribe(response => {
-      this.profileList = response;
-      console.log(this.profileList);
+    //  this.profileList = response;
+      this.store.dispatch(loadProfileList({profileList: response}));
+    //  console.log(this.profileList);
     },
     error => {
       console.log(error);
@@ -64,6 +95,13 @@ export class ProfilePageComponent implements OnInit {
   } 
 
   clearProfile() {
+    //search me
+
+    // this.store.dispatch({
+    //   type: CLEAR_PROFILE,
+    //   payload: true
+    // });
+
     this.activeProfile = Object.assign({}, initProfile);
   }
 
@@ -81,6 +119,20 @@ export class ProfilePageComponent implements OnInit {
 
   onProfileSumbitted(profile)
   {
+   // debugger;
+   // let result =  {};
+    // this.activeProfile$.subscribe(data => {
+    //   result = data;
+    // });
+
+  //  this.store.select('activeProfile').subscribe((data) => result = data );
+
+
+    // this.store.dispatch({
+    //   type: SUBMIT_PROFILE,
+    //   payload: profile
+    // });
+
     console.log(profile);
     if (profile.userId && profile.userId != '') {
       this.updateProfile(profile.userId, profile);
@@ -88,6 +140,7 @@ export class ProfilePageComponent implements OnInit {
     else {
       this.addProfile(profile);
     }
+
   }
 
 

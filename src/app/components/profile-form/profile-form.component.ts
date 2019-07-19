@@ -2,6 +2,11 @@ import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from '@
 import { FormControl, FormGroup, FormArray, Validators} from '@angular/forms';
 import { Profile, initProfile } from './../../models/profile';
 
+import { Observable, Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { loadProfileList } from '../../reducers/profile.actions';
+import { ProfileState} from '../../reducers';
+
 @Component({
   selector: 'app-profile-form',
   templateUrl: './profile-form.component.html',

@@ -11,7 +11,8 @@
 
 
 <hr/>
-
+{{ profileState$ | async | json }}
+{{ profileList$ | async | json }}
 <div class="row">
     <div class="col-8">
         <app-profile-form [profile]='activeProfile' (profileSumbit)='onProfileSumbitted($event)'></app-profile-form>
