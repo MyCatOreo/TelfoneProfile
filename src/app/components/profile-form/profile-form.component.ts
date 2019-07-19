@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { FormControl, FormGroup, FormArray, Validators} from '@angular/forms';
 import { Profile, initProfile } from './../../models/profile';
 
 @Component({
@@ -10,10 +11,26 @@ export class ProfileFormComponent implements OnInit {
 
   workingProfile: Profile; // for edit
 
+  // firstNameChanges: string;
+  // firstNameStatus: string;
+
+  profileForm = new FormGroup({
+    userId: new FormControl(undefined),
+    email: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    displayName: new FormControl('', [Validators.required]),
+    description: new FormControl(''),
+    department: new FormControl(''),
+    team: new FormControl(''),
+  });
+
   private _profile: Profile;
   @Input() set profile(profile: Profile) {
     this._profile = profile;
-    this.workingProfile = Object.assign({}, this.profile);
+    if(profile) {
+      this.profileForm.patchValue(profile); //have to use patchValue because of userId
+    }
   };
   get profile(): Profile{
     return this._profile;
@@ -24,20 +41,31 @@ export class ProfileFormComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if (this.profile) {
-      this.workingProfile = Object.assign({}, this.profile);
-    }
-    else {
-      this.workingProfile = Object.assign({}, initProfile);
-    }
+
+  }
+
+  ngAfterViewInit() {
+    //search me: test
+    // this.profileForm.get('firstName').valueChanges.subscribe(data => this.firstNameChanges = data);
+    // this.profileForm.get('firstName').statusChanges.subscribe(data => this.firstNameStatus = data);
   }
 
   loadWorkingProfile() {
     this.workingProfile = Object.assign({}, this.profile);
   }
 
+  //search me
+  clearProfile() {
+    this.profileForm.reset();
+  }
+
   submit() {
-    this.profileSumbit.emit(this.workingProfile);
+    if (this.profileForm.valid) {
+      this.profileSumbit.emit(this.profileForm.value as Profile);
+    }
+    else {
+      //search me
+    }
   }
 
 }

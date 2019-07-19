@@ -1,9 +1,13 @@
 <div class="container">
 <!-- {{workingProfile | json}} -->
+<form [formGroup]="profileForm" (ngSubmit)="submit()">
+
+    <input readonly hidden formControlName="userId">
+
     <div class="row">
         <div class="col-4">
             <mat-form-field>
-            <input matInput placeholder="Email" [(ngModel)]="workingProfile.email">
+            <input matInput placeholder="Email" formControlName="email">
             </mat-form-field>
         </div>
     </div>
@@ -11,49 +15,48 @@
     <div class="row">
         <div class="col-4">
             <mat-form-field>
-            <input matInput placeholder="First Name" [(ngModel)]="workingProfile.firstName">
+            <input matInput placeholder="First Name" formControlName="firstName">
             </mat-form-field>
         </div>
 
         <div class="col-4">
             <mat-form-field>
-                <input matInput placeholder="Last Name" [(ngModel)]="workingProfile.lastName">
+                <input matInput placeholder="Last Name" formControlName="lastName">
             </mat-form-field>
         </div>
-        
     </div>
         
     <div class="row">
         <div class="col-4">
             <mat-form-field>
-                <input matInput placeholder="Display Name" [(ngModel)]="workingProfile.displayName">
+                <input matInput placeholder="Display Name" formControlName="displayName">
             </mat-form-field>
         </div>
     </div>
             
     <div class="row">
-            <div class="col-6">
-                <mat-form-field>
-                <textarea matInput placeholder="Meal Preference" [(ngModel)]="workingProfile.description"></textarea>
+        <div class="col-6">
+            <mat-form-field>
+                <textarea matInput placeholder="Meal Preference" formControlName="description"></textarea>
             </mat-form-field>
-            </div>
+        </div>
     </div>
 
     <div class="row">
         <div class="col-4">
         <mat-form-field>
-                <input matInput placeholder="Department" [(ngModel)]="workingProfile.department">
+                <input matInput placeholder="Department" formControlName="department">
             </mat-form-field>
         </div>
         <div class="col-4">
             <mat-form-field>
-                <input matInput placeholder="Team" [(ngModel)]="workingProfile.team">
+                <input matInput placeholder="Team" formControlName="team">
             </mat-form-field>
         </div>
     </div>
 
-</div>
-
 <hr />
 
-<button mat-button  type="button" (click)="submit()">submit</button>
+<button mat-button type="submit">Submit</button>
+
+</form>
