@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Profile } from './../../models/profile';
+import { Profile, initProfile } from './../../models/profile';
 
 @Component({
   selector: 'app-profile-form',
@@ -16,7 +16,12 @@ export class ProfileFormComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.workingProfile = Object.assign({}, this.profile);
+    if (this.profile) {
+      this.workingProfile = Object.assign({}, this.profile);
+    }
+    else {
+      this.workingProfile = initProfile;
+    }
   }
 
   submit() {

@@ -78,14 +78,20 @@ export class ProfilePageComponent implements OnInit {
   } 
 
 
-  onProfileSelected(ev) {
-    console.log(ev);
+  onProfileSelected(id) {
+    console.log(id);
+    this.loadProfile(id);
   }
 
-  onProfileSumbitted(ev)
+  onProfileSumbitted(profile)
   {
-    console.log(ev);
-  
+    console.log(profile);
+    if (profile.userId && profile.userId != '') {
+      this.updateProfile(profile.userId, profile);
+    }
+    else {
+      this.addProfile(profile);
+    }
   }
 
 
