@@ -3,10 +3,9 @@
 <button mat-button type="button" (click)="clearProfile()">New Profile</button>
 
 <hr/>
-{{activeProfile$ | async | json}}
+
 <div class="row">
     <div class="col-8">
-        <!-- <app-profile-form [profile]='activeProfile$ | async' (profileSumbit)='onProfileSumbitted($event)'></app-profile-form> -->
         <app-profile-form (profileSumbit)='onProfileSumbitted($event)'></app-profile-form>
     </div>
     <div class="col-4">

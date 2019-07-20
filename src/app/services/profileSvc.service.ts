@@ -3,7 +3,7 @@ import { HttpClient} from '@angular/common/http';
 import { Profile } from '../models/profile';
 import { Observable, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ProfileState } from './../reducers/profile.reducer';
 import { ProfileActions } from 'src/app/reducers/action-types';
 

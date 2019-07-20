@@ -1,7 +1,7 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
-import { Profile } from './../../models/profile';
+import { Profile, initProfile } from './../../models/profile';
 import { ProfileState } from '../../reducers/profile.reducer';
 import { profile } from 'src/app/reducers/profile.selectors';
 import { Observable } from 'rxjs';
@@ -14,14 +14,14 @@ import { Observable } from 'rxjs';
 export class ProfileFormComponent implements OnInit{
 
   profileForm = new FormGroup({
-    userId: new FormControl(undefined),
-    email: new FormControl(''),
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    displayName: new FormControl('', [Validators.required]),
-    description: new FormControl(''),
-    department: new FormControl(''),
-    team: new FormControl(''),
+    userId: new FormControl(),
+    email: new FormControl(),
+    firstName: new FormControl(),
+    lastName: new FormControl(),
+    displayName: new FormControl([Validators.required]),
+    description: new FormControl(),
+    department: new FormControl(),
+    team: new FormControl(),
   });
 
   activeProfile$: Observable<Profile>;
@@ -34,7 +34,16 @@ export class ProfileFormComponent implements OnInit{
     this.activeProfile$ = this.store.pipe(
       select(profile)
     )
-    this.activeProfile$.subscribe(data => this.profileForm.patchValue(data));
+    this.activeProfile$.subscribe(data => {
+      if (data.userId) {
+        this.profileForm.patchValue(data)
+      }
+      else {
+        //search me
+        this.profileForm.reset();
+        this.profileForm.patchValue(initProfile);
+      }
+    });
   }
 
   //search me
@@ -44,6 +53,7 @@ export class ProfileFormComponent implements OnInit{
 
   submit() {
     if (this.profileForm.valid) {
+    //  debugger;
       this.profileSumbit.emit(this.profileForm.value as Profile);
     }
     else {
