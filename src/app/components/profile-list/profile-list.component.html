@@ -1,5 +1,5 @@
 <mat-list class="profile-list">
-    <mat-list-item *ngFor="let profile of profileList">
-        <button mat-button type="button" (click)="selectProfile(profile.userId)" class="full-width-btn">{{profile.displayName}}</button>
+    <mat-list-item *ngFor="let profile of profileList; let index = index">
+        <button mat-button type="button" (click)="selectProfile(index)" class="full-width-btn">{{profile.displayName}}</button>
     </mat-list-item>
 </mat-list>

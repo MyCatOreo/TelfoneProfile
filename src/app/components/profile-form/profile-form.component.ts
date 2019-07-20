@@ -1,23 +1,17 @@
-import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { FormControl, FormGroup, FormArray, Validators} from '@angular/forms';
-import { Profile, initProfile } from './../../models/profile';
-
-import { Observable, Subscription } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { loadProfileList } from '../../reducers/profile.actions';
-import { ProfileState} from '../../reducers';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { FormControl, FormGroup, Validators} from '@angular/forms';
+import { Profile } from './../../models/profile';
+import { ProfileState } from '../../reducers/profile.reducer';
+import { profile } from 'src/app/reducers/profile.selectors';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profile-form',
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.sass']
 })
-export class ProfileFormComponent implements OnInit {
-
-  workingProfile: Profile; // for edit
-
-  // firstNameChanges: string;
-  // firstNameStatus: string;
+export class ProfileFormComponent implements OnInit{
 
   profileForm = new FormGroup({
     userId: new FormControl(undefined),
@@ -30,42 +24,27 @@ export class ProfileFormComponent implements OnInit {
     team: new FormControl(''),
   });
 
-  private _profile: Profile;
-  @Input() set profile(profile: Profile) {
-    this._profile = profile;
-    if(profile) {
-      this.profileForm.patchValue(profile); //have to use patchValue because of userId
-    }
-  };
-  get profile(): Profile{
-    return this._profile;
-  }
+  activeProfile$: Observable<Profile>;
 
   @Output() profileSumbit = new EventEmitter<Profile>();
 
-  constructor() { }
+  constructor(private store: Store<ProfileState>) { }
 
   ngOnInit() {
-
-  }
-
-  ngAfterViewInit() {
-    //search me: test
-    // this.profileForm.get('firstName').valueChanges.subscribe(data => this.firstNameChanges = data);
-    // this.profileForm.get('firstName').statusChanges.subscribe(data => this.firstNameStatus = data);
-  }
-
-  loadWorkingProfile() {
-    this.workingProfile = Object.assign({}, this.profile);
+    this.activeProfile$ = this.store.pipe(
+      select(profile)
+    )
+    this.activeProfile$.subscribe(data => this.profileForm.patchValue(data));
   }
 
   //search me
-  clearProfile() {
+  resetProfile() {
     this.profileForm.reset();
   }
 
   submit() {
     if (this.profileForm.valid) {
+      debugger;
       this.profileSumbit.emit(this.profileForm.value as Profile);
     }
     else {

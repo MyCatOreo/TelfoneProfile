@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './../../services/profileSvc.service';
 import { Profile, initProfile } from './../../models/profile';
 import { MatSnackBar} from '@angular/material/snack-bar';
 
 import { Observable, Subscription } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { loadProfileList } from '../../reducers/profile.actions';
-import { ProfileState } from '../../reducers';
+import { Store, select } from '@ngrx/store';
+import { ProfileState } from '../../reducers/profile.reducer';
+import { profileList, profile } from 'src/app/reducers/profile.selectors';
+import { ProfileActions } from 'src/app/reducers/action-types';
 
 @Component({
   selector: 'app-profile-page',
@@ -15,94 +16,47 @@ import { ProfileState } from '../../reducers';
 })
 export class ProfilePageComponent implements OnInit {
 
-  profileList: Profile[];
   profileList$: Observable<Profile[]>;
 
-  activeProfile: Profile;
-  // activeProfile$: Observable<Profile>; //search me: for activeProfile
-  private profileStateSubscription: Subscription;
+  activeProfileIndex: number;
+  activeProfile$: Observable<Profile>;
 
-  constructor(private profileSvc: ProfileService, 
-    private _snackBar: MatSnackBar, 
-    private store: Store<ProfileState>) { 
-  //  this.profileState$ = store.select('activeProfile'); //search me: set observable for activeProfile
-  
-    this.profileList$ = this.profileSvc.getProfileAll();
-
-
-  }
+  constructor(private profileSvc: ProfileService, private _snackBar: MatSnackBar, private store: Store<ProfileState>) { }
 
   ngOnInit() {
-    //serach me: init store subscription here
+    //subscript store $ here
+    this.profileList$ = this.store.pipe(
+      select(profileList)
+    );
 
-    // this.profileStateSubscription = this.activeProfile$.subscribe((state) =>{
-    //   this.activeProfile = state; //search me: set active profile from updated state
-    // });
+    this.activeProfile$ = this.store.pipe(
+      select(profile)
+    );
 
+    //load the list when page loads
     this.getProfileList();
   }
-  
-  ngOnDestry() {
-    //search me: unsubscribe here
-  //  this.profileStateSubscription.unsubscribe();
-  }
 
-  addProfile(data: Profile) {
-    this.profileSvc.addProfile(data).subscribe(response => {
-      console.log(response);
-      this.getProfileList();
-      this.clearProfile();
-      this.openSnackBar("Profile Updated!","ok");
-    },
-    error => {
-      console.log(error)
-    });
-  }
 
-  updateProfile(id: number, data: Profile) {
-    this.profileSvc.updateProfileById(id, data).subscribe(response => {
-      console.log(response);
-      this.getProfileList();
-      this.clearProfile();
-      this.openSnackBar("Profile Updated!","ok");
-    },
-    error => {
-      console.log(error)
-    });
-  }
-
-  loadProfile(id: number) {
-  //  debugger;
-    this.profileSvc.getProfileById(id).subscribe(response => {
-      //serach me
-      this.activeProfile = response;
-      console.log(this.activeProfile);
-    },
-    error => {
-      console.log(error);
-    });
-  }
-
+  /**
+   * get new profile list from db
+   */
   getProfileList() {
     this.profileSvc.getProfileAll().subscribe(response => {
-    //  this.profileList = response;
-      this.store.dispatch(loadProfileList({profileList: response}));
-    //  console.log(this.profileList);
+      this.store.dispatch(ProfileActions.loadProfileList({profileList: response}));
     },
     error => {
       console.log(error);
     });
   } 
 
+  retrieveProfile(index: number | undefined) {
+    this.store.dispatch(ProfileActions.retrieveProfile({activeProfileIndex: index}));
+  }
+
   clearProfile() {
     //search me
-
-    // this.store.dispatch({
-    //   type: CLEAR_PROFILE,
-    //   payload: true
-    // });
-
-    this.activeProfile = Object.assign({}, initProfile);
+    this.store.dispatch(ProfileActions.clearProfile());
   }
 
   
@@ -112,36 +66,39 @@ export class ProfilePageComponent implements OnInit {
     });
   }
 
-  onProfileSelected(id) {
-    console.log(id);
-    this.loadProfile(id);
+  onProfileSelected(index) {
+    this.retrieveProfile(index);
   }
 
   onProfileSumbitted(profile)
-  {
-   // debugger;
-   // let result =  {};
-    // this.activeProfile$.subscribe(data => {
-    //   result = data;
-    // });
-
-  //  this.store.select('activeProfile').subscribe((data) => result = data );
-
-
-    // this.store.dispatch({
-    //   type: SUBMIT_PROFILE,
-    //   payload: profile
-    // });
-
-    console.log(profile);
+  { 
     if (profile.userId && profile.userId != '') {
       this.updateProfile(profile.userId, profile);
     }
     else {
       this.addProfile(profile);
     }
-
   }
 
-
+  addProfile(data: Profile) {
+    this.profileSvc.addProfile(data).subscribe(response => {
+      this.getProfileList();
+      this.clearProfile();
+      this.openSnackBar("Profile Added!","ok");
+    },
+    error => {
+      console.log(error)
+    });
+  }
+  
+  updateProfile(id: number, data: Profile) {
+    this.profileSvc.updateProfileById(id, data).subscribe(response => {
+      this.getProfileList();
+      this.clearProfile();
+      this.openSnackBar("Profile Updated!","ok");
+    },
+    error => {
+      console.log(error)
+    });
+  }
 }

@@ -17,7 +17,7 @@ import { ProfileService } from './services/profileSvc.service';
 
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { profileListReducer } from './reducers/profile.reducer';
+import { profileReducer } from './reducers/profile.reducer';
 import { environment } from 'src/environments/environment';
 
 @NgModule({
@@ -36,7 +36,7 @@ import { environment } from 'src/environments/environment';
     ReactiveFormsModule,
     MatButtonModule, MatButtonToggleModule, MatFormFieldModule,MatInputModule, MatListModule,MatSnackBarModule,
     StoreModule.forRoot({
-      profileListReducer
+      profileReducer
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],

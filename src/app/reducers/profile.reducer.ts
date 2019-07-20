@@ -5,12 +5,12 @@ import { Profile, initProfile } from '../models/profile';
 import { ProfileActions } from './action-types';
 
 export interface ProfileState {
-  activeProfile: Profile,
+  activeProfileIndex: number,
   profileList: Profile[]
 }
 
 export const initProfileState: ProfileState = {
-  activeProfile: initProfile,
+  activeProfileIndex: -1,
   profileList: []
 }
 
@@ -18,13 +18,15 @@ export const initProfileState: ProfileState = {
 
 // };
 
-export const profileListReducer = createReducer(
+export const profileReducer = createReducer(
   initProfileState,
   on(ProfileActions.loadProfileList, (state, action) => {
-      debugger;
-      return {
-          activeProfile: state.activeProfile,
-          profileList: action.profileList
-      }
+    return Object.assign({}, state, {profileList: action.profileList});
+  }),
+  on(ProfileActions.retrieveProfile, (state, action) => {
+    return Object.assign({}, state, {activeProfileIndex: action.activeProfileIndex});
+  }),
+  on(ProfileActions.clearProfile, (state, action) => {
+    return Object.assign({}, state, {activeProfileIndex: -1});
   })
 )

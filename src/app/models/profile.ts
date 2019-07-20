@@ -11,6 +11,7 @@ export interface Profile
 }
 
 export const initProfile: Profile = {
+    userId: undefined,
     email: "",
     firstName: "",
     lastName: "",

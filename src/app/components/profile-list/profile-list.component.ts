@@ -17,8 +17,8 @@ export class ProfileListComponent implements OnInit {
   ngOnInit() {
   }
 
-  selectProfile(id:number) {
-    this.profileSelect.emit(id);
+  selectProfile(index:number) {
+    this.profileSelect.emit(index);
   }
 
 }
