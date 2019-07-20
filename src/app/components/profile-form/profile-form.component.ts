@@ -14,14 +14,14 @@ import { Observable } from 'rxjs';
 export class ProfileFormComponent implements OnInit{
 
   profileForm = new FormGroup({
-    userId: new FormControl(),
-    email: new FormControl(),
-    firstName: new FormControl(),
-    lastName: new FormControl(),
-    displayName: new FormControl([Validators.required]),
-    description: new FormControl(),
-    department: new FormControl(),
-    team: new FormControl(),
+    userId: new FormControl(''),
+    email: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    displayName: new FormControl('',[Validators.required]),//search me
+    description: new FormControl(''),
+    department: new FormControl(''),
+    team: new FormControl(''),
   });
 
   activeProfile$: Observable<Profile>;

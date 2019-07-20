@@ -58,7 +58,7 @@ export class ProfilePageComponent implements OnInit {
   }
 
   clearProfile() {
-    //search me
+    //search me: known bug on New Profile button
     this.store.dispatch(ProfileActions.clearProfile());
   }
 
