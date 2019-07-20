@@ -44,7 +44,6 @@ export class ProfileFormComponent implements OnInit{
 
   submit() {
     if (this.profileForm.valid) {
-      debugger;
       this.profileSumbit.emit(this.profileForm.value as Profile);
     }
     else {

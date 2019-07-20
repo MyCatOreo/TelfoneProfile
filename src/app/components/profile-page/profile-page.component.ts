@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './../../services/profileSvc.service';
-import { Profile, initProfile } from './../../models/profile';
+import { Profile } from './../../models/profile';
 import { MatSnackBar} from '@angular/material/snack-bar';
 
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+
 import { Store, select } from '@ngrx/store';
 import { ProfileState } from '../../reducers/profile.reducer';
 import { profileList, profile } from 'src/app/reducers/profile.selectors';
@@ -35,8 +36,10 @@ export class ProfilePageComponent implements OnInit {
 
     //load the list when page loads
     this.getProfileList();
-  }
 
+    //update every 30s
+    this.profileSvc.profileListAutoUpdate().subscribe();
+  }
 
   /**
    * get new profile list from db
